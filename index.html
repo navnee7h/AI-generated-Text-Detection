@@ -1,0 +1,289 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function submitForm() {
+            var formData = new FormData($("#myForm")[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: '/analyze',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    var results = response['results'];
+                    var label = response['label'];
+                    var lsvm_label = response['lsvm_label'];
+                    document.getElementById("results").setAttribute('style', 'color: #231557');
+                    $("#results").css("fontSize", 18);
+                    $("#results").html("<p>Average Perplexity of the entire text : <mark>" + results['Perplexity'] + "</mark></p>"
+                        + "<p>Perplexity per line:<mark> " + results['Perplexity per line'] + "</mark></p>"
+                        + "<p>Burstiness:<mark> " + results['Burstiness'] + "</mark></p>"
+                        + "<p>Result :<mark>" + label + "</mark></p>"
+                        + "<p>LSVM model Predicition :<mark>" + lsvm_label +"</mark></p>");
+                    // Add animation to the results
+                    $("#results p").css("opacity", "0");
+                    $("#results p").addClass("animate-results");
+                    setTimeout(function () {
+                        $("#results p").css("opacity", "1");
+                    }, 1000); // Set the delay to 1000ms or any desired duration
+                },
+                error: function (xhr) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+    </script>
+    <title>AI - generated text detection</title>
+    <style type="text/css">
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            background-repeat: no-repeat;
+            background: linear-gradient(to right, #99ccff 0%, #cc5353 130%);
+            /* #cc1414 */
+        }
+
+        .animate-charcter {
+            text-transform: uppercase;
+            background-image: linear-gradient(-225deg,
+                    #231557 0%,
+                    #44107a 29%,
+                    #ee3f7a 67%,
+                    #7d79ed 100%);
+            background-size: auto auto;
+            background-clip: border-box;
+            background-size: 200% auto;
+            color: #fff;
+            background-clip: text;
+            text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textclip 2s;
+            display: inline-block;
+        }
+
+        @keyframes textclip {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        h1 {
+            font-family: 'Raleway', sans-serif;
+            font-size: 66px;
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .lineUp {
+            animation: 4s anim-lineUp;
+        }
+
+        @keyframes anim-lineUp {
+            0% {
+                opacity: 0;
+                transform: translateY(80%);
+            }
+
+            20% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+                transform: translateY(0%);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0%);
+            }
+        }
+
+        h3 {
+            display: flex;
+            flex-direction: row;
+            color: #403468;
+            font-family: 'Brush Script MT', cursive;
+            font-weight: lighter;
+            font-size: 150%;
+            position: relative;
+            left: 25%;
+            bottom: 60px;
+        }
+
+        h3:before,
+        h3:after {
+            content: "";
+            color: #231557;
+            flex: 0.1 0.1;
+            border-bottom: 1px solid;
+            margin: auto;
+        }
+
+        h3:before {
+            margin-right: 10px;
+            color: #231557;
+        }
+
+        h3:after {
+            margin-left: 10px;
+            color: #231557;
+        }
+
+        h2 {
+            font-family: 'Josefin Sans', sans-serif;
+            color: #231557;
+            ;
+        }
+
+        #container1 {
+            position: absolute;
+            left: 50px;
+            top: 20;
+            width: 960px;
+        }
+
+        .animate-results {
+            animation: fadeIn 2s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0%);
+            }
+        }
+
+        #container2 {
+            position: absolute;
+            right: 80px;
+            top: 270px;
+            width: 360px;
+            border-radius: 50px;
+            border: transparent;
+        }
+
+        #line {
+            position: absolute;
+            left: calc(105% - 1px);
+            top: 90px;
+            width: 1px;
+            height: 400px;
+            background-color: #231557;
+        }
+
+
+        #textbox {
+            font-family: serif;
+            border: none;
+            outline: none;
+            font-size: 16pt;
+            width: 100%;
+            height: 480px;
+            padding: 20px 30px;
+            line-height: 1.6;
+        }
+
+        input[type="submit"] {
+            background-color: #231557;
+            color: rgb(250, 249, 249);
+            border: none;
+            padding: 8px 16px;
+            font-family: 'Raleway', sans-serif;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 13px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #e9c15d;
+            color: rgb(2, 2, 2);
+        }
+
+        #myForm button {
+            background-color: #231557;
+            border: none;
+            color: rgb(254, 251, 251);
+            padding: 8px 16px;
+            font-family: 'Raleway', sans-serif;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 13px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 50px;
+            transition-duration: 0.3s ease;
+        }
+
+        #myForm button:hover {
+            background-color: #e9c15d;
+            color: rgb(14, 14, 14);
+        }
+
+        textarea {
+            border: none;
+            border-color: transparent;
+            border-radius: 50px;
+            background-color: transparent;
+        }
+
+        textarea::placeholder {
+            color: #231557;
+        }
+
+        mark {
+            background-color: #99ccff;
+            border-radius: 7px;
+        }
+    </style>
+    <center>
+        <h1 class="animate-charcter">
+            AI - generated text detection
+    </center>
+    </h1>
+</head>
+
+<body>
+    <div id="container1">
+        <h3 class="lineUp">
+            Check the involvement of Synthetic contents in any text
+        </h3>
+        <form id="myForm" onsubmit="event.preventDefault(); submitForm();">
+            <textarea id="textbox" name="text" , placeholder="Enter the text input to be checked..."></textarea>
+            <center>
+                <input type="submit" value="Analyze">
+                <button onclick="document.getElementById('textbox').value='';">Clear</button>
+            </center>
+        </form>
+        <div id="line"></div>
+    </div>
+    <div id="container2">
+        <center>
+            <h2>Analysis Report</h2>
+            <div id="results"></div>
+        </center>
+    </div>
+</body>
+
+</html>
