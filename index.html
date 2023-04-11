@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -18,13 +17,15 @@
                     var results = response['results'];
                     var label = response['label'];
                     var lsvm_label = response['lsvm_label'];
+                    var rf_label = response['rf_label'];
                     document.getElementById("results").setAttribute('style', 'color: #231557');
                     $("#results").css("fontSize", 18);
                     $("#results").html("<p>Average Perplexity of the entire text : <mark>" + results['Perplexity'] + "</mark></p>"
                         + "<p>Perplexity per line:<mark> " + results['Perplexity per line'] + "</mark></p>"
                         + "<p>Burstiness:<mark> " + results['Burstiness'] + "</mark></p>"
-                        + "<p>Result :<mark>" + label + "</mark></p>"
-                        + "<p>LSVM model Predicition :<mark>" + lsvm_label +"</mark></p>");
+                        + "<p>Perplexity Analysis Prediction:<mark>" + label + "</mark></p>"
+                        + "<p>LSVM model Predicition :<mark>" + lsvm_label +"</mark></p>"
+                        + "<p>Random Forest model Predicition :<mark>" + rf_label +"</mark></p>");
                     // Add animation to the results
                     $("#results p").css("opacity", "0");
                     $("#results p").addClass("animate-results");
@@ -285,5 +286,4 @@
         </center>
     </div>
 </body>
-
 </html>
