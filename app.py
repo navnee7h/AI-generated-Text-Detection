@@ -9,7 +9,6 @@ import os
 if not os.path.isfile('tfidf_vectorizer.pkl'):
    print('File tfidf_vectorizer.pkl not found')
 
-
 app = Flask(__name__)
 gpt2ppl = GPT2PPL()
 
@@ -40,8 +39,7 @@ def analyze():
 
     if (data != " "  and len(data)<100):
         return jsonify({'results': results, 'label': 'Undefined - Please input min 100 characters!', 'lsvm_label': 'Undefined - Please input min 100 characters!', 'rf_label': 'Undefined - Please input min 100 characters!'})
-    
-    
+     
     data_tfidf = tfidf_vectorizer.transform([data])
     lsvm_label = lsvm_model.predict(data_tfidf).tolist()
     data_rf_tfidf = rf_vectorizer.transform([data])
