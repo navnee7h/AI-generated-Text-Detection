@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -111,6 +112,30 @@
 
             fileInput.labels[0].style.display = '';
         }
+
+        $(document).ready(function () {
+            $("#clearButton").click(function () {
+                $("#container2").hide();
+                $("#container3").hide();
+                $("#container5").hide()
+            });
+        });
+
+        $(document).ready(function () {
+            $("#analyse").click(function () {
+                if ($("#textbox").val().trim() !== '') { // check if textbox has any input text
+                    $("#container2").show();
+                    $("#container3").show();
+                    $("#container5").hide()
+
+                }
+                else {
+                    $("#container2").hide();
+                    $("#container3").hide();
+                    $("#container5").show().html("<p style='text-align:center; font-size :20px; color:231557;'>Please enter some text in the textbox.</p>");
+                }
+            });
+        });
 
     </script>
 
@@ -394,6 +419,15 @@
             width: 360px;
         }
 
+        #container5 {
+            position: absolute;
+            right: 80px;
+            top: 270px;
+            width: 360px;
+            border-radius: 50px;
+            border: transparent;
+        }
+
         #line {
             position: absolute;
             left: calc(105% - 1px);
@@ -510,7 +544,7 @@
             <textarea id="textbox" name="text" , placeholder="Enter the text input to be checked..."></textarea>
             <center>
                 <input type="file" id="file_accept" accept=".txt" onchange="handleFileSelect(event)" />
-                <input type="submit" value="Analyze">
+                <input type="submit" value="Analyze" id="analyse">
                 <button id="clearButton" onclick="document.getElementById('textbox').value='';" ,
                     onclick="clearForm()">Clear</button>
             </center>
@@ -539,6 +573,11 @@
     <div id="container3">
         <center>
             <div id="FinalPrediction"></div>
+        </center>
+    </div>
+    <div id="container5" display="None">
+        <center>
+            <div id="Caution"></div>
         </center>
     </div>
 </body>
